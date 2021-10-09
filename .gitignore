@@ -36232,3 +36232,5 @@ server/package-lock.json
 *.ps1
 *.js
 *.md
+*.json
+client/node_modules/.cache/.eslintcache
