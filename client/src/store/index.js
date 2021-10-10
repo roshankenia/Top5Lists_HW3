@@ -2,6 +2,7 @@ import { createContext, useState } from "react";
 import jsTPS from "../common/jsTPS";
 import api from "../api";
 import MoveItem_Transaction from "../transactions/MoveItem_Transaction";
+import ChangeItem_Transaction from "../transactions/ChangeItem_Transaction";
 export const GlobalStoreContext = createContext({});
 /*
     This is our global data store. Note that it uses the Flux design pattern,
@@ -19,6 +20,7 @@ export const GlobalStoreActionType = {
   SET_CURRENT_LIST: "SET_CURRENT_LIST",
   SET_LIST_NAME_EDIT_ACTIVE: "SET_LIST_NAME_EDIT_ACTIVE",
   CREATE_NEW_LIST: "CREATE_NEW_LIST",
+  SET_ITEM_EDIT_ACTIVE: "SET_ITEM_EDIT_ACTIVE",
 };
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -96,6 +98,17 @@ export const useGlobalStore = () => {
           isItemEditActive: false,
           listMarkedForDeletion: null,
         });
+      }
+
+      case GlobalStoreActionType.SET_ITEM_EDIT_ACTIVE: {
+          return setStore({
+            idNamePairs: store.idNamePairs,
+            currentList: store.currentList,
+            newListCounter: store.newListCounter,
+            isListNameEditActive: false,
+            isItemEditActive: true,
+            listMarkedForDeletion: null,
+          });
       }
 
       case GlobalStoreActionType.CREATE_NEW_LIST: {
@@ -196,6 +209,17 @@ export const useGlobalStore = () => {
     }
     asyncSetCurrentList(id);
   };
+  store.addChangeItemTransaction = function(oldText, newText, index){
+      let transaction = new ChangeItem_Transaction(store, oldText, newText, index);
+      tps.addTransaction(transaction);
+  }
+
+  store.changeItem = function (index, text){
+      store.currentList.items[index] = text;
+
+      store.updateCurrentList();
+  }
+
   store.addMoveItemTransaction = function (start, end) {
     let transaction = new MoveItem_Transaction(store, start, end);
     tps.addTransaction(transaction);
@@ -295,6 +319,13 @@ export const useGlobalStore = () => {
       payload: null,
     });
   };
+
+  store.setIsItemEditActive = function () {
+      storeReducer({
+          type: GlobalStoreActionType.SET_ITEM_EDIT_ACTIVE,
+          payload:null,
+      });
+  }
 
   // THIS GIVES OUR STORE AND ITS REDUCER TO ANY COMPONENT THAT NEEDS IT
   return { store, storeReducer };

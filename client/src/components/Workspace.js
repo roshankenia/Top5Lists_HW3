@@ -21,7 +21,7 @@ function Workspace() {
                         <Top5Item 
                             id={'top5-item-' + (index+1)}
                             key={'top5-item-' + (index+1)}
-                            text={item}
+                            name={item}
                             index={index} 
                         />
                     ))
