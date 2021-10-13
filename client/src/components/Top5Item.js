@@ -32,6 +32,7 @@ function Top5Item(props) {
 
   function handleToggleEdit(event) {
     event.stopPropagation();
+    setText(props.name);
     toggleEdit();
   }
 
@@ -53,7 +54,9 @@ function Top5Item(props) {
     setDraggedTo(false);
 
     // UPDATE THE LIST
-    store.addMoveItemTransaction(sourceId, targetId);
+    if (sourceId !== targetId) {
+      store.addMoveItemTransaction(sourceId, targetId);
+    }
   }
 
   function handleKeyPress(event) {

@@ -28,6 +28,7 @@ function ListCard(props) {
 
     function handleToggleEdit(event) {
         event.stopPropagation();
+        setText(idNamePair.name);
         toggleEdit();
     }
 
@@ -42,6 +43,7 @@ function ListCard(props) {
     function handleKeyPress(event) {
         if (event.code === "Enter") {
             let id = event.target.id.substring("list-".length);
+            console.log(text);
             store.changeListName(id, text);
             toggleEdit();
         }

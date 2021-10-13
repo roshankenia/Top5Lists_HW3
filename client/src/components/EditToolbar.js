@@ -41,6 +41,11 @@ function EditToolbar() {
   if (store.currentList) {
     closeClass = enabledButtonClass;
   }
+  if (store.isItemEditActive) {
+    undoClass = disabledButtonClass;
+    redoClass = disabledButtonClass;
+    closeClass = disabledButtonClass;
+  }
   return (
     <div id="edit-toolbar">
       <div

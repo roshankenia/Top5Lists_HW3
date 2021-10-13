@@ -21,6 +21,12 @@ const ListSelector = () => {
     }, []);
 
     let listCard = "";
+
+    let addClass = "top5-button";
+
+    if(store.isListNameEditActive){
+        addClass = "top5-button-disabled";
+    }
     if (store) {
         listCard = store.idNamePairs.map((pair) => (
             <ListCard
@@ -37,7 +43,7 @@ const ListSelector = () => {
                     type="button"
                     onClick={handleNewList}
                     id="add-list-button"
-                    className="top5-button"
+                    className={addClass}
                     value="+" />
                 Your Lists
             </div>
