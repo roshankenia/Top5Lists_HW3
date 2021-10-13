@@ -47,6 +47,11 @@ function ListCard(props) {
         }
     }
 
+    function handleMarkForDelete(event){
+        event.stopPropagation();
+        store.markForDeletion(idNamePair);
+    }
+
     function handleUpdateText(event) {
         setText(event.target.value );
     }
@@ -76,6 +81,7 @@ function ListCard(props) {
                 type="button"
                 id={"delete-list-" + idNamePair._id}
                 className="list-card-button"
+                onClick={handleMarkForDelete}
                 value={"\u2715"}
             />
             <input
