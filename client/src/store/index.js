@@ -25,6 +25,7 @@ export const GlobalStoreActionType = {
   HIDE_DELETE_MODAL: "HIDE_DELETE_MODAL",
   DELETE_LIST: "DELETE_LIST",
   SET_TOOLBAR_ICONS: "SET_TOOLBAR_ICONS",
+  NO_CHANGE_IN_ITEM_NAME: "NO_CHANGE_IN_ITEM_NAME",
 };
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -102,6 +103,20 @@ export const useGlobalStore = () => {
           hasRedo: store.hasRedo,
         });
       }
+
+      case GlobalStoreActionType.NO_CHANGE_IN_ITEM_NAME: {
+        return setStore({
+          idNamePairs: store.idNamePairs,
+          currentList: store.currentList,
+          newListCounter: store.newListCounter,
+          isListNameEditActive: false,
+          isItemEditActive: false,
+          listMarkedForDeletion: null,
+          hasUndo: store.hasUndo,
+          hasRedo: store.hasRedo,
+        });
+      }
+
       // START EDITING A LIST NAME
       case GlobalStoreActionType.SET_LIST_NAME_EDIT_ACTIVE: {
         return setStore({
@@ -334,13 +349,22 @@ export const useGlobalStore = () => {
     asyncSetCurrentList(id);
   };
   store.addChangeItemTransaction = function (oldText, newText, index) {
-    let transaction = new ChangeItem_Transaction(
-      store,
-      oldText,
-      newText,
-      index
-    );
-    tps.addTransaction(transaction);
+    console.log(oldText);
+    console.log(newText);
+    if (oldText !== newText) {
+      let transaction = new ChangeItem_Transaction(
+        store,
+        oldText,
+        newText,
+        index
+      );
+      tps.addTransaction(transaction);
+    } else {
+      storeReducer({
+        type: GlobalStoreActionType.NO_CHANGE_IN_ITEM_NAME,
+        payload: null,
+      });
+    }
   };
 
   store.changeItem = function (index, text) {

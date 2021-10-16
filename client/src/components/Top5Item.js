@@ -70,6 +70,8 @@ function Top5Item(props) {
     setText(event.target.value);
   }
 
+  function dummy() {}
+
   let { index, name } = props;
   let itemClass = "top5-item";
   if (draggedTo) {
@@ -88,22 +90,38 @@ function Top5Item(props) {
       />
     );
   } else {
+    let editFunction = handleToggleEdit;
+    let dragStartFunction = handleDragStart;
+    let dragOverFunction = handleDragOver;
+    let dragEnterFunction = handleDragEnter;
+    let dragLeaveFunction = handleDragLeave;
+    let dropFunction = handleDrop;
+    let editClass = "list-card-button";
+    if (store.isItemEditActive) {
+      editFunction = dummy;
+      dragStartFunction = dummy;
+      dragOverFunction = dummy;
+      dragEnterFunction = dummy;
+      dragLeaveFunction = dummy;
+      dropFunction = dummy;
+      editClass = "list-card-button-disabled";
+    }
     return (
       <div
         id={"item-" + (index + 1)}
         className={itemClass}
-        onDragStart={handleDragStart}
-        onDragOver={handleDragOver}
-        onDragEnter={handleDragEnter}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
+        onDragStart={dragStartFunction}
+        onDragOver={dragOverFunction}
+        onDragEnter={dragEnterFunction}
+        onDragLeave={dragLeaveFunction}
+        onDrop={dropFunction}
         draggable="true"
       >
         <input
           type="button"
           id={"edit-item-" + index + 1}
-          className="list-card-button"
-          onClick={handleToggleEdit}
+          className={editClass}
+          onClick={editFunction}
           value={"\u270E"}
         />
         {props.name}
