@@ -349,8 +349,6 @@ export const useGlobalStore = () => {
     asyncSetCurrentList(id);
   };
   store.addChangeItemTransaction = function (oldText, newText, index) {
-    console.log(oldText);
-    console.log(newText);
     if (oldText !== newText) {
       let transaction = new ChangeItem_Transaction(
         store,
